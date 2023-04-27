@@ -2,7 +2,7 @@
 
 /**
  * print_square - prints a square, followed by a new line
- *@size - size is the size of square
+ *@size: size is the size of square
  * Return: Always 0.
  */
 
