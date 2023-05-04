@@ -9,15 +9,15 @@
 
 int _strcmp(char *s1, char *s2)
 {
-	int value;
+	int x;
 
-	value = strcmp(s1, s2);
-	if (value == 0)
+	x = strcmp(s1, s2);
+	if (x == 0)
 	{
 		return (0);
 	}
 	else
 	{
-		return (value);
+		return (x);
         }
 }
