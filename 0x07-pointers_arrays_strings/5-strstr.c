@@ -14,7 +14,7 @@ char *_strstr(char *haystack, char *needle)
 	int idx = 0, k = 0;
 
 	for (idx = 0; haystack[idx] != '\0'; haystack++)
-		while (haystack[idx + k] == needle[k] && needle[k] != '\0')
+		while (haystack[idx] == needle[k] && needle[k] != '\0')
 		{
 			k++;
 		}
