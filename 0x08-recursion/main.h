@@ -13,4 +13,6 @@ int is_palindrome(char *s);
 int wildcmp(char *s1, char *s2);
 int real_sqrt_recursion(int n, int i);
 int actual_prime_number(int n, int i);
+int actual_pal(char *s, int i, int lgth);
+int strlen_recursion(char *s);
 #endif
