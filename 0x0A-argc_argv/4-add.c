@@ -21,17 +21,17 @@ int main(int argc, char *argv[])
 	for (x = 1; x < argc; x++)
 	{
 		char *arg = argv[x];
-		int is_valid = 1;
+		int is_num = 1;
 
 		for (y = 0; arg[y] != '\0'; y++)
 		{
 			if (!isdigit(arg[y]))
 			{
-				is_valid = 0;
+				is_num = 0;
 				break;
 			}
 		}
-		if (is_valid)
+		if (is_num)
 		{
 			sum += atoi(arg);
 		}
