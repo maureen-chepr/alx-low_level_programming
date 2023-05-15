@@ -13,7 +13,7 @@ char *str_concat(char *s1, char *s2)
 {
 	char *s3;
 	unsigned int size, str1, str2;
-	unsigned int x = 0;
+	unsigned int x;
 
 	if (s1 == NULL)
 	{
@@ -41,20 +41,4 @@ char *str_concat(char *s1, char *s2)
 	}
 	s3[str1 + str2] = '\0';
 	return (s3);
-/*}
-int main(void)
-{
-	char *s1 = "Hello, ";
-	char *s2 = "world!";
-	char *s3 = str_concat(s1, s2);
-
-	if (s3 == NULL)
-	{
-		return ('\0');
-	}*/
-	else
-	{
-		return (*s3);
-	}
-	return (0);
 }
