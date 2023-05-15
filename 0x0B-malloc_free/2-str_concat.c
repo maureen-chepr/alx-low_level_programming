@@ -26,12 +26,12 @@ char *str_concat(char *s1, char *s2)
 	str1 = strlen(s1);
 	str2 = strlen(s2);
 	size = (str1 + str2) + 1;
-	s3 = (char *) malloc(size * sizeof(char));
+	s3 = (char *)malloc(size * sizeof(char));
 	if (s3 == NULL)
 	{
 		return (NULL);
 	}
-	for (x = 0; x <= str2; x++)
+	for (x = 0; x < str1; x++)
 	{
 		s3[x] = s1[x];
 	}
