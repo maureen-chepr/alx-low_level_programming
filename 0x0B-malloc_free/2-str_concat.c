@@ -17,11 +17,11 @@ char *str_concat(char *s1, char *s2)
 
 	if (s1 == NULL)
 	{
-		return ("");
+		return (NULL);
 	}
 	if (s2 == NULL)
 	{
-		return ("");
+		return (NULL);
 	}
 	str1 = strlen(s1);
 	str2 = strlen(s2);
