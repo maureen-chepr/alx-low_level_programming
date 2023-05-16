@@ -19,7 +19,7 @@ char *str_concat(char *s1, char *s2)
 		s1 = "";
 	if (s2 == NULL)
 		s2 = ("");
-	
+
 	str1 = strlen(s1);
 	str2 = strlen(s2);
 	size = (str1 + str2) + 1;
