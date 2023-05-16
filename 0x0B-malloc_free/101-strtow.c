@@ -1,83 +1,66 @@
-#include <stdlib.h>
 #include "main.h"
+#include <stdlib.h>
 #include <string.h>
 
 /**
- * word_count- counts the number of words in a string
- * @str: string to evaluate
- *Return: no of words
- */
-int word_count(char *str)
-{
-	int flag = 0, x, y = 0;
-
-	for (x = 0; str[x] != '\0'; x++)
-	{
-		if (str[x] == ' ')
-			flag = 0;
-		else if (flag == 0)
-		{
-			flag = 1;
-			y++;
-		}
-	}
-	return (y);
-}
-
-/**
- * strtow -  function that splits a string into words
- * @str: string to be split to words
+ * strtow - function that splits a string into words
+ * @str: string to be split into words
  * Return: pointer to an array of strings (Success)
  * or NULL (fail)
  */
 char **strtow(char *str)
 {
+	int words = 0;
+	int x, y, z;
 	char **array;
-	int words, idx;
-	int len, start, word_len, i, j;
 
 	if (str == NULL || *str == '\0')
-		return (NULL);
-	words = word_count(str);
-	if (words == 0)
-		return (NULL);
-	array = malloc((words + 1) * sizeof(char *));
-	if (array == NULL)
-		return (NULL);
-	len = strlen(str);
-	idx = 0;
-	start = 0;
-	word_len = 0;
-
-	for (i = 0; i <= len; i++)
 	{
-		if (str[i] == ' ' || str[i] == '\0')
+		return (NULL);
+	}
+	for (x = 0; str[x] != '\0'; x++)
+	{
+		if (str[x] != ' ' && (x == 0 || str[x - 1] == ' '))
+			words++;
+	}
+	array = (char **)malloc((words + 1) * sizeof(char *));
+	if (array == NULL)
+	{
+		return (NULL);
+	}
+	x = 0;
+	y = 0;
+	while (str[x] != '\0')
+	{
+		if (str[x] != ' ')
 		{
-			if (word_len > 0)
+			int lgth = 0;
+
+			z = x;
+
+			while (str[z] != ' ' && str[z] != '\0')
 			{
-				array[idx] = malloc((word_len + 1) * sizeof(char));
-				if (array[idx] == NULL)
-				{
-					for (j = 0; j < idx; j++)
-						free(array[j]);
-					free(array);
-					return (NULL);
-				}
-				strncpy(array[idx], &str[start], word_len);
-				array[idx][word_len] = '\0';
-				idx++;
-				word_len = 0;
+				lgth++;
+				z++;
 			}
+			array[y] = (char *)malloc((lgth + 1) * sizeof(char));
+			if (array[y] == NULL)
+			{
+				while (y > 0)
+					free(array[--y]);
+				free(array);
+				return (NULL);
+			}
+			for (z = 0; z < lgth; z++, x++)
+				array[y][z] = str[x];
+			array[y][z] = '\0';
+			y++;
 		}
 		else
 		{
-			if (word_len == 0)
-			{
-				start = i;
-			}
-			word_len++;
+			x++;
 		}
 	}
-	array[idx] = NULL;
+	array[y] = NULL;
 	return (array);
 }
