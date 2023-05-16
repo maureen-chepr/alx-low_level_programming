@@ -8,10 +8,10 @@
  */
 char **strtow(char *str)
 {
-	int words = 0, x, y, z;
+	int words = 0, x = 0, y, z;
 	char **array;
 
-	if (str == NULL || *str == '\0')
+	if (str == NULL || str[x] == '\0')
 		return (NULL);
 	for (x = 0; str[x] != '\0'; x++)
 	{
