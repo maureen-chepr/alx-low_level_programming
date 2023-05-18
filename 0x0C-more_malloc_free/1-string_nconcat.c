@@ -7,7 +7,7 @@
  * @s1: first string
  * @s2: second string
  * @n: no of bytes
- * Resturn: pointer to s3
+ * Return: pointer to s3
  */
 
 char *string_nconcat(char *s1, char *s2, unsigned int n)
@@ -25,8 +25,10 @@ char *string_nconcat(char *s1, char *s2, unsigned int n)
 		s2 = "";
 	}
 	if (n >= lgth2)
+	{
 		n = lgth2;
-	s3 = (char*)malloc(lgth3 + 1);
+	}
+	s3 = (char *)malloc(lgth3 + 1);
 	if (s3 == NULL)
 	{
 		s3 = "";
