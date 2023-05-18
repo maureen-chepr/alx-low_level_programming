@@ -12,17 +12,17 @@
 
 char *string_nconcat(char *s1, char *s2, unsigned int n)
 {
-	unsigned int x, y, lgth1 = strlen(s1), lgth2 = strlen(s2);
+	unsigned int x, y, lgth1 = 0, lgth2 = 0;
 	char *s3;
 	unsigned int lgth3 = lgth1 + n;
 
-	if (s1 == NULL)
+	if (s1 != NULL)
 	{
-		s1 = "";
+		lgth1 = strlen(s1);
 	}
-	if (s2 == NULL)
+	if (s2 != NULL)
 	{
-		s2 = "";
+		lgth2 = strlen(s2);
 	}
 	if (n >= lgth2)
 	{
