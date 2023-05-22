@@ -3,8 +3,8 @@
 
 /**
  * init_dog - unction that initialize a variable of type struct dog
- * @d: pointer to struct dog  
- * @name: name  
+ * @d: pointer to struct dog
+ * @name: name
  * @age: age
  * @owner: owner
  */
