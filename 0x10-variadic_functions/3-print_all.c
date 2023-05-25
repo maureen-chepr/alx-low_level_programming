@@ -9,43 +9,44 @@
 
 void print_all(const char * const format, ...)
 {
-	char *str;
-	int i;
-	float f;
-	char c;
-	unsigned int idx = 0;
-	va_list lists;
+	int idx = 0;
+	char *s, *separator = "";
 
-	va_start(lists, format);
-	while (format[idx])
+	va_list list;
+
+	va_start(list, format);
+
+	if (format)
 	{
-		if (format[idx] == 'c')
+		while (format[idx])
 		{
-			c = (char)va_arg(lists, int);
-			printf("%c", c);
+			switch (format[idx])
+			{
+				case 'c':
+					printf("%s%c", separator, va_arg(list, int));
+					break;
+				case 'i':
+					printf("%s%d", separator, va_arg(list, int));
+					break;
+				case 'f':
+					printf("%s%f", separator, va_arg(list, double));
+					break;
+				case 's':
+					s = va_arg(list, char *);
+					if (!s)
+						s = "(nil)";
+					printf("%s%s", separator, s);
+					break;
+				default:
+					idx++;
+					continue;
+			}
+			separator = ", ";
+			idx++;
 		}
-		else if (format[idx] == 'i')
-		{
-			i = va_arg(lists, int);
-			printf("%d", i);
-		}
-		else if (format[idx] == 'f')
-		{
-			f = (float)va_arg(lists, double);
-			printf("%f", f);
-		}
-		else if (format[idx] == 's')
-		{
-			str = va_arg(lists, char *);
-			if (str == NULL)
-				printf("(nil)");
-			else
-				printf("%s", str);
-		}
-		if (format[idx + 1] != '\0' && (format[idx] == 'c' || format[idx] == 'i' || format[idx] == 'f' || format[idx] == 's'))
-			printf(", ");
-		idx++;
 	}
-	va_end(lists);
+
 	printf("\n");
+	va_end(list);
 }
+
