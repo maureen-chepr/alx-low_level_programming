@@ -1,6 +1,4 @@
-#include <stdio.h>
-
-void print_before_main(void) __attribute__((constructor));
+#include "lists.h"
 
 /**
  * print_before_main - Function that prints before main function is executed
