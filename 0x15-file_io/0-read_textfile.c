@@ -1,4 +1,6 @@
 #include "main.h"
+#include <unistd.h>
+#include <fcntl.h>
 
 /**
  * read_textfile - function that reads a text file and
@@ -11,34 +13,45 @@
 
 ssize_t read_textfile(const char *filename, size_t letters)
 {
-	ssize_t bytes_read;
-	int ch;
-	size_t count;
-	FILE *fp = fopen(filename, "r");
+	char *buffer;
+	ssize_t file_descriptor, bytes_read, bytes_written, total_bytes_written;
 
 	if (filename == NULL)
+		return (0);
+
+	file_descriptor = open(filename, O_RDONLY);
+	if (file_descriptor == -1)
+		return (0);
+
+	buffer = malloc(sizeof(char) * letters);
+	if (buffer == NULL)
 	{
+		close(file_descriptor);
 		return (0);
 	}
-
-	if (fp == NULL)
+	
+	bytes_read = read(file_descriptor, buffer, letters);
+	if (bytes_read == -1)
 	{
+		free(buffer);
+		close(file_descriptor);
 		return (0);
 	}
-	bytes_read = 0;
-	count = 0;
-
-	while ((ch = fgetc(fp)) != EOF && count < letters)
+	
+	total_bytes_written = 0;
+	while (bytes_read > 0)
 	{
-		fputc(ch, stdout);
-		bytes_read++;
-		count++;
+		bytes_written = write(STDOUT_FILENO, buffer + total_bytes_written, bytes_read);
+		if (bytes_written == -1)
+		{
+			free(buffer);
+			close(file_descriptor);
+			return (0);
+		}
+		total_bytes_written += bytes_written;
+		bytes_read -= bytes_written;
 	}
-	fclose(fp);
-
-	if (bytes_read < 0)
-	{
-		return (0);
-	}
-	return (bytes_read);
+	free(buffer);
+	close(file_descriptor);
+	return (total_bytes_written);
 }
