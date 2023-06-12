@@ -1,5 +1,5 @@
 #include "main.h"
-
+#include <unistd.h>
 /**
  * main - Copies the contents of a file to another file.
  * @argc: The number of arguments supplied to the program.
@@ -18,21 +18,20 @@ int main(int argc, char *argv[])
 
 	if (argc != 3)
 	{
-		fprintf(stderr, "Usage: cp file_from file_to\n");
+		dprintf(STDERR_FILENO, "Usage: cp file_from file_to\n");
 		exit(97);
 	}
-	
 	file_from = fopen(argv[1], "rb");
 	if (file_from == NULL)
 	{
-		fprintf(stderr, "Error: Can't read from file %s\n", argv[1]);
+		dprintf(STDERR_FILENO, "Error: Can't read from file %s\n", argv[1]);
 		exit(98);
 	}
 	file_to = fopen(argv[2], "wb");
 	if (file_to == NULL)
 	{
 		fclose(file_from);
-		fprintf(stderr, "Error: Can't write to %s\n", argv[2]);
+		dprintf(STDERR_FILENO, "Error: Can't write to %s\n", argv[2]);
 		exit(99);
 	}
 	while ((bytes_read = fread(buffer, 1, sizeof(buffer), file_from)) > 0)
@@ -40,20 +39,17 @@ int main(int argc, char *argv[])
 		bytes_written = fwrite(buffer, 1, bytes_read, file_to);
 		if (bytes_written != bytes_read)
 		{
-			fclose(file_from);
-			fclose(file_to);
-			fprintf(stderr, "Error: Failed to write to %s\n", argv[2]);
+			fclose(file_from), fclose(file_to);
+			dprintf(STDERR_FILENO, "Error: Failed to write to %s\n", argv[2]);
 			exit(99);
 		}
 	}
 	if (ferror(file_from) || ferror(file_to))
 	{
-		fclose(file_from);
-		fclose(file_to);
-		fprintf(stderr, "Error: File I/O error occurred\n");
+		fclose(file_from), fclose(file_to);
+		dprintf(STDERR_FILENO, "Error: File I/O error occurred\n");
 		exit(99);
 	}
-	fclose(file_from);
-	fclose(file_to);
+	fclose(file_from), fclose(file_to);
 	return (0);
 }
