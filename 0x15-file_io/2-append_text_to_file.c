@@ -21,11 +21,11 @@ int append_text_to_file(const char *filename, char *text_content)
 	file_descriptor = open(filename, O_WRONLY | O_APPEND);
 	if (file_descriptor == -1)
 		return (-1);
-	
+
 	bytes_written = write(file_descriptor, text_content, content_length);
 	close(file_descriptor);
 	if (bytes_written == -1)
 		return (-1);
-	
+
 	return (1);
 }
