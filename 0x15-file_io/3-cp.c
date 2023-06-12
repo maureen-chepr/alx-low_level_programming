@@ -1,5 +1,7 @@
 #include "main.h"
 #include <unistd.h>
+#include <fcntl.h>
+#include <sys/stat.h>
 /**
  * main - Copies the contents of a file to another file.
  * @argc: The number of arguments supplied to the program.
@@ -12,44 +14,55 @@
  */
 int main(int argc, char *argv[])
 {
-	FILE *file_from, *file_to;
+	int file_from_fd, file_to_fd;
+	ssize_t bytes_read, bytes_written;
 	char buffer[1024];
-	size_t bytes_read, bytes_written;
 
 	if (argc != 3)
 	{
 		dprintf(STDERR_FILENO, "Usage: cp file_from file_to\n");
 		exit(97);
 	}
-	file_from = fopen(argv[1], "rb");
-	if (file_from == NULL)
+	file_from_fd = open(argv[1], O_RDONLY);
+	if (file_from_fd == -1)
 	{
 		dprintf(STDERR_FILENO, "Error: Can't read from file %s\n", argv[1]);
 		exit(98);
 	}
-	file_to = fopen(argv[2], "wb");
-	if (file_to == NULL)
+	file_to_fd = open(argv[2], O_WRONLY | O_CREAT | O_TRUNC,
+			S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
+	if (file_to_fd == -1)
 	{
-		fclose(file_from);
+		close(file_from_fd);
 		dprintf(STDERR_FILENO, "Error: Can't write to %s\n", argv[2]);
 		exit(99);
 	}
-	while ((bytes_read = fread(buffer, 1, sizeof(buffer), file_from)) > 0)
+	while ((bytes_read = read(file_from_fd, buffer, sizeof(buffer))) > 0)
 	{
-		bytes_written = fwrite(buffer, 1, bytes_read, file_to);
+		bytes_written = write(file_to_fd, buffer, bytes_read);
 		if (bytes_written != bytes_read)
 		{
-			fclose(file_from), fclose(file_to);
+			close(file_from_fd), close(file_to_fd);
 			dprintf(STDERR_FILENO, "Error: Failed to write to %s\n", argv[2]);
 			exit(99);
 		}
 	}
-	if (ferror(file_from) || ferror(file_to))
+	if (bytes_read == -1)
 	{
-		fclose(file_from), fclose(file_to);
-		dprintf(STDERR_FILENO, "Error: File I/O error occurred\n");
-		exit(99);
+		close(file_from_fd), close(file_to_fd);
+		dprintf(STDERR_FILENO, "Error: Failed to read from %s\n", argv[1]);
+		exit(98);
 	}
-	fclose(file_from), fclose(file_to);
+	if (close(file_from_fd) == -1)
+	{
+		dprintf(STDERR_FILENO, "Error: Can't close fd %d\n", file_from_fd);
+		exit(100);
+	}
+	if (close(file_to_fd) == -1)
+	{
+		dprintf(STDERR_FILENO, "Error: Can't close fd %d\n", file_to_fd);
+		exit(100);
+	}
 	return (0);
 }
+
