@@ -172,7 +172,7 @@ void shash_table_print(const shash_table_t *ht)
 {
 	shash_node_t *tmp;
 	char flag = 0;
-	
+
 	if (ht == NULL || ht->array == NULL)
 		return;
 	printf("{");
