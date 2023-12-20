@@ -1,4 +1,4 @@
 CC := cc
 SRC := .c
-all:
+all: $(CC) $(SRC)
 	g${CC} main${SRC} school${SRC} -o school
